@@ -1,9 +1,11 @@
 import axios from "axios";
+import { useHistory } from 'react-router-dom'
 import CartItem from "../components/CartItem";
 import { useCartContext } from '../contexts/CartContext';
 
 function Cart() {
     const { cart } = useCartContext();
+    const history = useHistory();
 
     if(cart.loading) {
         return <p className="text-center text-2xl mt-8">Loading...</p>
@@ -17,6 +19,9 @@ function Cart() {
          //  (request) -> create product related to user in orders collection
 
     const checkOut = (cartProducts) => {
+        const cartProductsCount = cartProducts.length;
+        let iterateCount = 0;
+
         cartProducts.forEach(cartProduct => {
             // get product in prodcuts collection -> we need original quantity, (original quantity - cart quantity = available quantity)
             axios.get(`http://localhost:3004/products/${cartProduct.productId}`)
@@ -35,7 +40,13 @@ function Cart() {
                                         userId: 'userId here',
                                         ...cartProduct,
                                     })
-                                    .then(res => console.log(res.data))
+                                    .then(res => {
+                                        iterateCount++;
+
+                                        if(iterateCount === cartProductsCount){
+                                            history.replace('/payment-success');
+                                        }
+                                    })
                                     .catch(err => console.log(err.message))
                                 })
                                 .catch(err => console.log(err.message))

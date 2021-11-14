@@ -3,6 +3,7 @@ import Header from './components/Header';
 
 import Home from './pages/Home';
 import Cart from './pages/Cart';
+import PaymentSuccess from './pages/PaymentSuccess';
 
 function App() {
     return (
@@ -12,6 +13,7 @@ function App() {
                 <Switch>
                     <Route path="/" component={Home} exact /> 
                     <Route path="/cart" component={Cart} />
+                    <Route path="/payment-success" component={PaymentSuccess} />
                 </Switch>
             </div>
         </>
